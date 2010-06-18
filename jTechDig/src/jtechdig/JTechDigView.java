@@ -127,10 +127,13 @@ public class JTechDigView extends FrameView {
         jSaveDataButton = new javax.swing.JButton();
         jClearTableDataButton = new javax.swing.JButton();
         displayArea = new jtechdig.DisplayArea();
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jOpenMenu = new javax.swing.JMenuItem();
-        jOpenExampleMenu = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jOriginMenu = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenuLog = new javax.swing.JMenu();
@@ -213,8 +216,13 @@ public class JTechDigView extends FrameView {
 
         displayArea.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         displayArea.setText(resourceMap.getString("displayArea.text")); // NOI18N
+        displayArea.setAlignmentY(0.0F);
         displayArea.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         displayArea.setName("displayArea"); // NOI18N
+
+        jLabel1.setFont(resourceMap.getFont("jLabel1.font")); // NOI18N
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -236,13 +244,15 @@ public class JTechDigView extends FrameView {
                                 .addComponent(jSaveDataButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jClearTableDataButton))))
-                    .addComponent(jCoordinatesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCoordinatesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE)
                     .addComponent(displayArea, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
@@ -259,7 +269,7 @@ public class JTechDigView extends FrameView {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCoordinatesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -282,14 +292,28 @@ public class JTechDigView extends FrameView {
         });
         fileMenu.add(jOpenMenu);
 
-        jOpenExampleMenu.setText(resourceMap.getString("jOpenExampleMenu.text")); // NOI18N
-        jOpenExampleMenu.setName("jOpenExampleMenu"); // NOI18N
-        jOpenExampleMenu.addActionListener(new java.awt.event.ActionListener() {
+        jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
+        jMenu1.setName("jMenu1"); // NOI18N
+
+        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jOpenExampleMenuActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        fileMenu.add(jOpenExampleMenu);
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
+        jMenuItem2.setName("jMenuItem2"); // NOI18N
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        fileMenu.add(jMenu1);
 
         jOriginMenu.setText(resourceMap.getString("jOriginMenu.text")); // NOI18N
         jOriginMenu.setName("jOriginMenu"); // NOI18N
@@ -461,7 +485,7 @@ public class JTechDigView extends FrameView {
 //                jLabelPicture.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
                 jLogWindow.append("File '" + chooser.getSelectedFile().getName() + "' successfully opened ...\n");
                 jLogWindow.append("Hint: Go to File/Set Origin menu to define origin ...\n");
-                displayArea.setToolTipText("");
+                displayArea.setToolTipText(null);
             }
         } catch (IOException ex) {
         }
@@ -497,20 +521,6 @@ public class JTechDigView extends FrameView {
             return SciFormat.format(in);
         }
     }
-    private void jOpenExampleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOpenExampleMenuActionPerformed
-        // TODO add your handling code here:
-        if (displayArea.getIcon() == null) {
-            try {
-                displayArea.showPicture(ImageIO.read(getClass().getResource("resources/hysteresis.png")));
-                jLogWindow.append("Hint: Go to File/Set Origin menu to define origin ...\n");
-                displayArea.setToolTipText("");
-
-            } catch (IOException ex) {
-                jLogWindow.append("Something went wrong ...\n");
-            }
-        }
-    }//GEN-LAST:event_jOpenExampleMenuActionPerformed
-
     private void mainPanelComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_mainPanelComponentResized
         // TODO add your handling code here:
     }//GEN-LAST:event_mainPanelComponentResized
@@ -596,8 +606,8 @@ public class JTechDigView extends FrameView {
                 }
                 BufferedWriter out = new BufferedWriter(new FileWriter(pngFilePath));
                 for (int ii = 0; ii < jTableCapturedData.getRowCount(); ii++) {
-                    if (!jTableCapturedData.getModel().getValueAt(ii, 0).toString().isEmpty() &&
-                            !jTableCapturedData.getModel().getValueAt(ii, 1).toString().isEmpty()) {
+                    if (!jTableCapturedData.getModel().getValueAt(ii, 0).toString().isEmpty()
+                            && !jTableCapturedData.getModel().getValueAt(ii, 1).toString().isEmpty()) {
                         out.write(jTableCapturedData.getModel().getValueAt(ii, 0) + ";" + jTableCapturedData.getModel().getValueAt(ii, 1) + "\n");
                     }
                 }
@@ -641,15 +651,45 @@ public class JTechDigView extends FrameView {
 
     }//GEN-LAST:event_jLogYCheckBoxMenuItemActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        displayArea.setIcon(null);
+        if (displayArea.getIcon() == null) {
+            try {
+                displayArea.showPicture(ImageIO.read(getClass().getResource("resources/hysteresis.png")));
+                jLogWindow.append("Hint: Go to File/Set Origin menu to define origin ...\n");
+                displayArea.setToolTipText(null);
+            } catch (IOException ex) {
+                jLogWindow.append("Something went wrong ...\n");
+            }
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        displayArea.setIcon(null);
+        if (displayArea.getIcon() == null) {
+            try {
+                displayArea.showPicture(ImageIO.read(getClass().getResource("resources/hdtv_fractal_ant_geom96.png")));
+                jLogWindow.append("Hint: Go to File/Set Origin menu to define origin ...\n");
+                displayArea.setToolTipText(null);
+            } catch (IOException ex) {
+                jLogWindow.append("Something went wrong ...\n");
+            }
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jtechdig.DisplayArea displayArea;
     private javax.swing.JButton jClearTableDataButton;
     private javax.swing.JLabel jCoordinatesLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JTextArea jLogWindow;
     private javax.swing.JCheckBoxMenuItem jLogXCheckBoxMenuItem;
     private javax.swing.JCheckBoxMenuItem jLogYCheckBoxMenuItem;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenu jMenuLog;
-    private javax.swing.JMenuItem jOpenExampleMenu;
     private javax.swing.JMenuItem jOpenMenu;
     private javax.swing.JMenuItem jOriginMenu;
     private javax.swing.JButton jSaveDataButton;
@@ -725,6 +765,4 @@ public class JTechDigView extends FrameView {
     public boolean isTableExist() {
         return tableExist;
     }
-
-
 }

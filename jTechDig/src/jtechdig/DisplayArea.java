@@ -160,6 +160,8 @@ public class DisplayArea extends JLabel {
     public void showPicture(BufferedImage bi) {
         imageDisplay = new ImageDisplay(bi, width, height);
         setIcon(new ImageIcon(imageDisplay.displayImage()));
+        setVerticalAlignment(CENTER);
+        setHorizontalAlignment(CENTER);
     }
 
     /**
