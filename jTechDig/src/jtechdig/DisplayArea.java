@@ -88,7 +88,7 @@ public class DisplayArea extends JLabel {
         }
 //        // Captured points
 //        if (JTechDigApp.getApplication().getView().isTableExist()) {
-        int rc = JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount();
+        int rc = getRowCount();
         if (rc > 1) {
             for (int ii = 0; ii < rc - 1; ii++) {
                 double HH = Double.valueOf(JTechDigApp.getApplication().getView().getJTableCapturedData().getValueAt(ii, 0).toString());
@@ -116,6 +116,15 @@ public class DisplayArea extends JLabel {
             }
         }
 //        }
+    }
+
+    private int getRowCount() {
+        if (!(JTechDigApp.getApplication()==null)) {
+            JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount();
+            return JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount();
+        } else {
+            return 0;
+        }
     }
 
     /**

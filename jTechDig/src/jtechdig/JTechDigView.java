@@ -126,7 +126,7 @@ public class JTechDigView extends FrameView {
         jTableCapturedData = new javax.swing.JTable();
         jSaveDataButton = new javax.swing.JButton();
         jClearTableDataButton = new javax.swing.JButton();
-        displayArea = new jtechdig.DisplayArea(600,400);
+        displayArea = new jtechdig.DisplayArea();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jOpenMenu = new javax.swing.JMenuItem();
@@ -213,6 +213,7 @@ public class JTechDigView extends FrameView {
 
         displayArea.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         displayArea.setText(resourceMap.getString("displayArea.text")); // NOI18N
+        displayArea.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         displayArea.setName("displayArea"); // NOI18N
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -258,7 +259,7 @@ public class JTechDigView extends FrameView {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCoordinatesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
