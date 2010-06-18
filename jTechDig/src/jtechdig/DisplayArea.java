@@ -27,20 +27,22 @@ public class DisplayArea extends JLabel {
     private boolean originSet = false;
     private int clickCount = 0;
     // Screen coordinates of corners
-    private double x1,  y1,  x2,  y2;
+    private double x1, y1, x2, y2;
     // Real coordinates of corners
-    private double H1 = 0.0,  B1 = 0.0,  H2 = 0.0,  B2 = 0.0;
+    private double H1 = -1.0, B1 = -1.0, H2 = -1.0, B2 = -1.0;
     // Coordinate point
-    private double x,  y,  H,  B;
-    private double panX1,  panY1,  panX2,  panY2;
+    private double x, y, H, B;
+    private double panX1, panY1, panX2, panY2;
     // scales linear (xLin=true) on logarithmic (xLin=false)
-    private boolean xLin = true,  yLin = true;
+    private boolean xLin = true, yLin = true;
     private DecimalFormatSymbols dts = new DecimalFormatSymbols(new Locale("en_US"));
     private DecimalFormat FourDigits = new DecimalFormat("######.####", dts);
     private DecimalFormat TwoDigits = new DecimalFormat("######.##", dts);
     private ImageDisplay imageDisplay;
-    private int width,  height;
+    private int width, height;
     private jCoordinatesDialog dlg;
+    private boolean firstCoordinateSet = false;
+
 
     public DisplayArea() {
         width = 600;
@@ -64,62 +66,62 @@ public class DisplayArea extends JLabel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Coordinate system reference points
-        if (Math.abs(H1) > 0.0 && Math.abs(B1) > 0.0) {
+        if (firstCoordinateSet) {
             g.setColor(Color.RED);
             imageDisplay.calculateOriginalCoordinates(x1, y1);
             int xxmo = (int) Math.round(imageDisplay.getXMo()) - 5;
             int yymo = (int) Math.round(imageDisplay.getYMo()) - 5;
-            if ((xxmo > imageDisplay.getVGap()) && (yymo > imageDisplay.getHGap()) &&
-                    (xxmo < (600 - imageDisplay.getVGap())) &&
-                    (yymo < (400 - imageDisplay.getHGap()))) {
-                g.fillOval(xxmo,yymo, 10, 10);
+            if ((xxmo > imageDisplay.getVGap()) && (yymo > imageDisplay.getHGap())
+                    && (xxmo < (600 - imageDisplay.getVGap()))
+                    && (yymo < (400 - imageDisplay.getHGap()))) {
+                g.fillOval(xxmo, yymo, 10, 10);
             }
         }
-        if (Math.abs(H2) > 0.0 && Math.abs(B2) > 0.0) {
+        if (originSet) {
             g.setColor(Color.RED);
             imageDisplay.calculateOriginalCoordinates(x2, y2);
             int xxmo = (int) Math.round(imageDisplay.getXMo()) - 5;
             int yymo = (int) Math.round(imageDisplay.getYMo()) - 5;
-            if ((xxmo > imageDisplay.getVGap()) && (yymo > imageDisplay.getHGap()) &&
-                    (xxmo < (600 - imageDisplay.getVGap())) &&
-                    (yymo < (400 - imageDisplay.getHGap()))) {
+            if ((xxmo > imageDisplay.getVGap()) && (yymo > imageDisplay.getHGap())
+                    && (xxmo < (600 - imageDisplay.getVGap()))
+                    && (yymo < (400 - imageDisplay.getHGap()))) {
                 g.fillOval(xxmo, yymo, 10, 10);
             }
         }
 //        // Captured points
-//        if (JTechDigApp.getApplication().getView().isTableExist()) {
-        int rc = getRowCount();
-        if (rc > 1) {
-            for (int ii = 0; ii < rc - 1; ii++) {
-                double HH = Double.valueOf(JTechDigApp.getApplication().getView().getJTableCapturedData().getValueAt(ii, 0).toString());
-                double BB = Double.valueOf(JTechDigApp.getApplication().getView().getJTableCapturedData().getValueAt(ii, 1).toString());
-                double xd, yd;
-                if (xLin) {
-                    xd = (HH - H1) / (H2 - H1) * (x2 - x1) + x1;
-                } else {
-                    xd = (Math.log10(HH) - Math.log10(H1)) / (Math.log10(H2) - Math.log10(H1)) * (x2 - x1) + x1;
-                }
-                if (yLin) {
-                    yd = (BB - B1) / (B2 - B1) * (y2 - y1) + y1;
-                } else {
-                    yd = (Math.log10(BB) - Math.log10(B1)) / (Math.log10(B2) - Math.log10(B1)) * (y2 - y1) + y1;
-                }
-                imageDisplay.calculateOriginalCoordinates(xd, yd);
-                g.setColor(Color.GREEN);
-                int xxmo = (int) Math.round(imageDisplay.getXMo()) - 5;
-                int yymo = (int) Math.round(imageDisplay.getYMo()) - 5;
-                if ((xxmo > imageDisplay.getVGap()) && (yymo > imageDisplay.getHGap()) &&
-                        (xxmo < (600 - imageDisplay.getVGap())) &&
-                        (yymo < (400 - imageDisplay.getHGap()))) {
-                    g.fillOval(xxmo, yymo, 10, 10);
+        if (originSet) {
+            int rc = JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount();
+            if (rc > 1) {
+                for (int ii = 0; ii < rc - 1; ii++) {
+                    double HH = Double.valueOf(JTechDigApp.getApplication().getView().getJTableCapturedData().getValueAt(ii, 0).toString());
+                    double BB = Double.valueOf(JTechDigApp.getApplication().getView().getJTableCapturedData().getValueAt(ii, 1).toString());
+                    double xd, yd;
+                    if (xLin) {
+                        xd = (HH - H1) / (H2 - H1) * (x2 - x1) + x1;
+                    } else {
+                        xd = (Math.log10(HH) - Math.log10(H1)) / (Math.log10(H2) - Math.log10(H1)) * (x2 - x1) + x1;
+                    }
+                    if (yLin) {
+                        yd = (BB - B1) / (B2 - B1) * (y2 - y1) + y1;
+                    } else {
+                        yd = (Math.log10(BB) - Math.log10(B1)) / (Math.log10(B2) - Math.log10(B1)) * (y2 - y1) + y1;
+                    }
+                    imageDisplay.calculateOriginalCoordinates(xd, yd);
+                    g.setColor(Color.GREEN);
+                    int xxmo = (int) Math.round(imageDisplay.getXMo()) - 5;
+                    int yymo = (int) Math.round(imageDisplay.getYMo()) - 5;
+                    if ((xxmo > imageDisplay.getVGap()) && (yymo > imageDisplay.getHGap())
+                            && (xxmo < (600 - imageDisplay.getVGap()))
+                            && (yymo < (400 - imageDisplay.getHGap()))) {
+                        g.fillOval(xxmo, yymo, 10, 10);
+                    }
                 }
             }
         }
-//        }
     }
 
     private int getRowCount() {
-        if (!(JTechDigApp.getApplication()==null)) {
+        if (!(JTechDigApp.getApplication() == null)) {
             JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount();
             return JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount();
         } else {
@@ -208,9 +210,10 @@ public class DisplayArea extends JLabel {
                         y1 = imageDisplay.getYDisplay();
                         H1 = dlg.getXx();
                         B1 = dlg.getYy();
-                        JTechDigApp.getApplication().getView().getJLogWindow().append("Coordinate assignment(" + clickCount + "): " +
-                                "(" + TwoDigits.format(x1) + ";" + TwoDigits.format(y1) + ") -> " +
-                                "(" + OwnFormat(H1) + ";" + OwnFormat(B1) + ")...\n");
+                        JTechDigApp.getApplication().getView().getJLogWindow().append("Coordinate assignment(" + clickCount + "): "
+                                + "(" + TwoDigits.format(x1) + ";" + TwoDigits.format(y1) + ") -> "
+                                + "(" + OwnFormat(H1) + ";" + OwnFormat(B1) + ")...\n");
+                        firstCoordinateSet = true;
 //                        repaint();
                     } else {
                         imageDisplay.calculateDisplayCoordinates(evt.getX(), evt.getY());
@@ -218,8 +221,8 @@ public class DisplayArea extends JLabel {
                         y2 = imageDisplay.getYDisplay();
                         H2 = dlg.getXx();
                         B2 = dlg.getYy();
-                        JTechDigApp.getApplication().getView().getJLogWindow().append("Coordinate assignment(" + clickCount + "): (" + TwoDigits.format(x2) + ";" + TwoDigits.format(y2) + ") -> " +
-                                "(" + OwnFormat(H2) + ";" + OwnFormat(B2) + ")...\n");
+                        JTechDigApp.getApplication().getView().getJLogWindow().append("Coordinate assignment(" + clickCount + "): (" + TwoDigits.format(x2) + ";" + TwoDigits.format(y2) + ") -> "
+                                + "(" + OwnFormat(H2) + ";" + OwnFormat(B2) + ")...\n");
                         JTechDigApp.getApplication().getView().getJLogWindow().append("Hint: The coordinate system is defined...\n");
                         JTechDigApp.getApplication().getView().getJLogWindow().append("Hint: Now you can start capturing points by mouse click ...\n");
 //                    jLogWindow.append("Both 'x' and 'y' scales are linear ...\n");
@@ -235,18 +238,18 @@ public class DisplayArea extends JLabel {
                     if (xLin) {
                         H = H1 + (x - x1) / (x2 - x1) * (H2 - H1);
                     } else {
-                        H = Math.pow(10, Math.log10(H1) +
-                                (x - x1) / (x2 - x1) * (Math.log10(H2) - Math.log10(H1)));
+                        H = Math.pow(10, Math.log10(H1)
+                                + (x - x1) / (x2 - x1) * (Math.log10(H2) - Math.log10(H1)));
                     }
 
                     if (yLin) {
                         B = B1 + (y - y1) / (y2 - y1) * (B2 - B1);
                     } else {
-                        B = Math.pow(10, Math.log10(B1) +
-                                (y - y1) / (y2 - y1) * (Math.log10(B2) - Math.log10(B1)));
+                        B = Math.pow(10, Math.log10(B1)
+                                + (y - y1) / (y2 - y1) * (Math.log10(B2) - Math.log10(B1)));
                     }
-                    JTechDigApp.getApplication().getView().getJLogWindow().append("Screen coordinates: (" + FourDigits.format(x) + ";" + FourDigits.format(y) + ") -> " +
-                            "Real coordinates: (" + OwnFormat(H) + ";" + OwnFormat(B) + ")\n");
+                    JTechDigApp.getApplication().getView().getJLogWindow().append("Screen coordinates: (" + FourDigits.format(x) + ";" + FourDigits.format(y) + ") -> "
+                            + "Real coordinates: (" + OwnFormat(H) + ";" + OwnFormat(B) + ")\n");
                     JTechDigApp.getApplication().getView().getJTableCapturedData().getModel().setValueAt(OwnFormat(H), JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount() - 1, 0);
                     JTechDigApp.getApplication().getView().getJTableCapturedData().getModel().setValueAt(OwnFormat(B),
                             JTechDigApp.getApplication().getView().getJTableCapturedData().getRowCount() - 1, 1);
@@ -308,18 +311,18 @@ public class DisplayArea extends JLabel {
                     if (xLin) {
                         H = H1 + (x - x1) / (x2 - x1) * (H2 - H1);
                     } else {
-                        H = Math.pow(10, Math.log10(H1) +
-                                (x - x1) / (x2 - x1) * (Math.log10(H2) - Math.log10(H1)));
+                        H = Math.pow(10, Math.log10(H1)
+                                + (x - x1) / (x2 - x1) * (Math.log10(H2) - Math.log10(H1)));
                     }
                     if (yLin) {
                         B = B1 + (y - y1) / (y2 - y1) * (B2 - B1);
                     } else {
-                        B = Math.pow(10, Math.log10(B1) +
-                                (y - y1) / (y2 - y1) * (Math.log10(B2) - Math.log10(B1)));
+                        B = Math.pow(10, Math.log10(B1)
+                                + (y - y1) / (y2 - y1) * (Math.log10(B2) - Math.log10(B1)));
                     }
                     JTechDigApp.getApplication().getView().getJCoordinatesLabel().setText(
-                            "Pixels: (" + Math.round(imageDisplay.getXDisplay()) + ";" + Math.round(imageDisplay.getYDisplay()) +
-                            ") -> Coordinates: (" + OwnFormat(H) + ";" + OwnFormat(B) + ")");
+                            "Pixels: (" + Math.round(imageDisplay.getXDisplay()) + ";" + Math.round(imageDisplay.getYDisplay())
+                            + ") -> Coordinates: (" + OwnFormat(H) + ";" + OwnFormat(B) + ")");
                 } else {
                     JTechDigApp.getApplication().getView().getJCoordinatesLabel().setText(
                             "Pixels: (" + Math.round(imageDisplay.getXDisplay()) + ";" + Math.round(imageDisplay.getYDisplay()) + ")");
