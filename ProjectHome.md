@@ -1,0 +1,2 @@
+jTechDig is a software tool written in Java for digitizing data from an image of graph or plot. jTechDig can import images from .gif, .bmp, .png etc. files. After mapping of the coordinates system the data can be digitized manually by clicking the mouse. The graphs can be magnified and panned for higher accuracy.
+The captured data can be saved to text file where the data are separeted by semi-colon.
